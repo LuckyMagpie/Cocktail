@@ -1,0 +1,3 @@
+adaptfilt==0.2
+librosa==0.4.1
+PyBrain==0.3
