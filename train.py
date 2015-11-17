@@ -3,6 +3,7 @@ from scipy import signal
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.structure import TanhLayer
 from pybrain.datasets import SupervisedDataSet
+import cPickle
 import wienerlayer
 import adaptfilt
 import backprop
@@ -18,10 +19,8 @@ ds.addSample(y, y2)
 
 trainer = backprop.BackpropTrainerWiener(net, ds)
 
-for i in xrange(130):
+for i in xrange(1):
     print trainer.train()
 
-y3 = net.activate(y)
-y3 = librosa.util.normalize(y3)
-
-librosa.output.write_wav("red.wav", y3, sr2)
+with open("netFile.pkl", "wb") as arch:
+    cPickle.dump(net, arch, -1)
