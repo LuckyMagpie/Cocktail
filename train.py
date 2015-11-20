@@ -11,28 +11,31 @@ import backprop
 ds = SupervisedDataSet(220500, 220500)
 for i in xrange(5):
 	if (i<5):
-    	y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".mp3", duration=10.0)
-    	y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".mp3", duration=10.0)
-    	ds.addSample(y, y2)
-    else if(i==5):
-    	y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".wav", duration=30.0)
-    	y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".wav", duration=30.0)
-    	ds.addSample(y, y2)
-    else if(i==6):
-    	y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".wav", duration=26.0)
-    	y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".wav", duration=26.0)
-    	ds.addSample(y, y2)
-    else if(i==7):
-    	y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".wav", duration=21.0)
-    	y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".wav", duration=21.0)
-    	ds.addSample(y, y2)
+		y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".mp3", duration=10.0)
+		y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".mp3", duration=10.0)
+		ds.addSample(y, y2)
+
+	elif(i==5):
+		y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".wav", duration=30.0)
+		y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".wav", duration=30.0)
+		ds.addSample(y, y2)
+
+	elif(i==6):
+		y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".wav", duration=26.0)
+		y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".wav", duration=26.0)
+		ds.addSample(y, y2)
+	
+	elif(i==7):
+		y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".wav", duration=21.0)
+		y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".wav", duration=21.0)
+		ds.addSample(y, y2)
 
 net = buildNetwork(220500, 35, 30, 25, 20, 15, 13, 6, 3, 220500, hiddenclass=TanhLayer,outclass=wienerlayer.WienerLayer)
 
 trainer = backprop.BackpropTrainerWiener(net, ds)
 
 for i in xrange(200):
-    print trainer.train()
+	print trainer.train()
 
 with open("netFile.pkl", "wb") as arch:
-    cPickle.dump(net, arch, -1)
+	cPickle.dump(net, arch, -1)
