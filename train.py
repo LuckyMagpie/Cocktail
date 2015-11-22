@@ -8,23 +8,38 @@ import wienerlayer
 import adaptfilt
 import backprop
 
-ds = SupervisedDataSet(220500, 220500)
-for i in xrange(5):
-	if (i<5):
-		y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".mp3", duration=10.0)
-		y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".mp3", duration=10.0)
-		ds.addSample(y, y2)
+ds = SupervisedDataSet(220500, 3)
 
-	else:
-		y, sr = librosa.load("./sample/" +str(i)+ "/" +str(i)+ ".wav", duration=10.0)
-		y2, sr2 = librosa.load("./sample/" +str(i)+ "/R" +str(i)+ ".wav", duration=10.0)
-		ds.addSample(y, y2)
+y, sr = librosa.load("./sample/0/0.mp3", duration=10.0)
+ds.addSample(y, [7,15,13])
 
-net = buildNetwork(220500, 35, 30, 25, 20, 15, 13, 6, 3, 220500, hiddenclass=TanhLayer,outclass=wienerlayer.WienerLayer)
+y, sr = librosa.load("./sample/1/1.mp3", duration=10.0)
+ds.addSample(y, [11,9,40])
+
+y, sr = librosa.load("./sample/2/2.mp3", duration=10.0)
+ds.addSample(y, [20,9,1])
+
+y, sr = librosa.load("./sample/3/3.mp3", duration=10.0)
+ds.addSample(y, [160,5,23])
+
+y, sr = librosa.load("./sample/4/4.mp3", duration=10.0)
+ds.addSample(y, [4,20,20])
+
+y, sr = librosa.load("./sample/5/5.wav", duration=10.0)
+ds.addSample(y, [10,76,70])
+
+y, sr = librosa.load("./sample/6/6.wav", duration=10.0)
+ds.addSample(y, [9,56,100])
+
+y, sr = librosa.load("./sample/7/7.wav", duration=10.0)
+ds.addSample(y, [20,45,80])
+
+
+net = buildNetwork(220500, 80,  3)
 
 trainer = backprop.BackpropTrainerWiener(net, ds)
 
-for i in xrange(200):
+for i in xrange(100):
 	print trainer.train()
 
 with open("netFile.pkl", "wb") as arch:
