@@ -9,8 +9,6 @@ with open("netFile.pkl", "rb") as arch:
 
 
 y,sr = librosa.load(argv[1], duration=10.0)
-y2,sr2 = librosa.load("./sample/7/R7.wav", duration=10.0)
-
 
 w = y
 for i in xrange(int(argv[2])):
@@ -20,11 +18,16 @@ for i in xrange(int(argv[2])):
     n = abs(n)
     print r, s, n
 
-    for j in xrange(r):
-        w = signal.wiener(w, mysize=s, noise=n)
 
-    w= librosa.util.normalize(w)
+    #No hace falta iterar por que se reduce el rango dinamico
+    #for j in xrange(r):
+    #    w = signal.wiener(w, mysize=s, noise=n)
+
+    w = signal.wiener(w, mysize=s, noise=n)
+
+    #La normalizacion corrige variaciones importantes para el LMS como los maximos y minimos de la onda, es mejor desactivarla
+    #w = librosa.util.normalize(w)
     librosa.output.write_wav("net"+ str(i) +".wav", w, sr)
-    out, w, coe = adaptfilt.nlmsru(y , w, 1, 0.0008)
+    out, w, coe = adaptfilt.nlmsru(y , w, 1, 0.00001)
 
 
