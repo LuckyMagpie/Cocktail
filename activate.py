@@ -25,5 +25,6 @@ for i in xrange(int(argv[2])):
 
     w= librosa.util.normalize(w)
     librosa.output.write_wav("net"+ str(i) +".wav", w, sr)
-    w = signal.correlate(y,w)/signal.correlate(w,w)
+    out, w, coe = adaptfilt.nlmsru(y , w, 1, 0.0008)
+
 
